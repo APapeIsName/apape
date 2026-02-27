@@ -5,8 +5,22 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "apape",
+  title: {
+    default: "APAPE",
+    template: "%s | APAPE",
+  },
   description: "Blog & AI Encyclopedia Platform",
+  icons: {
+    icon: "/favicon.svg",
+  },
+  openGraph: {
+    title: "APAPE",
+    description: "Blog & AI Encyclopedia Platform",
+    url: "https://apape.vercel.app",
+    siteName: "APAPE",
+    images: [{ url: "/og-image.svg", width: 1200, height: 630 }],
+    type: "website",
+  },
 };
 
 export default function RootLayout({

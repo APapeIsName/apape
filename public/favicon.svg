@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Background -->
+  <rect width="32" height="32" rx="4" fill="#2E3440"/>
+  <!-- Book body -->
+  <rect x="6" y="8" width="20" height="18" fill="#5E81AC"/>
+  <!-- Book spine -->
+  <rect x="6" y="8" width="4" height="18" fill="#4C6A8F"/>
+  <!-- Pages -->
+  <rect x="12" y="10" width="12" height="14" fill="#ECEFF4"/>
+  <!-- Text lines on pages -->
+  <rect x="14" y="13" width="8" height="2" fill="#88C0D0"/>
+  <rect x="14" y="17" width="6" height="2" fill="#88C0D0"/>
+  <rect x="14" y="21" width="7" height="2" fill="#88C0D0"/>
+  <!-- AI sparkle -->
+  <rect x="24" y="4" width="2" height="2" fill="#88C0D0"/>
+  <rect x="22" y="6" width="2" height="2" fill="#88C0D0"/>
+  <rect x="26" y="6" width="2" height="2" fill="#88C0D0"/>
+  <rect x="24" y="8" width="2" height="2" fill="#88C0D0"/>
+</svg>

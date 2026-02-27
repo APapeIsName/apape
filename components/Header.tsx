@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { SignOutButton } from "./SignOutButton";
 import { DarkModeToggle } from "./DarkModeToggle";
@@ -12,10 +13,7 @@ export async function Header() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-nord-light-accent dark:bg-nord-dark-accent flex items-center justify-center border-2 border-nord-light-text dark:border-nord-dark-text">
-              {/* Placeholder for a pixel-art icon */}
-              <div className="w-4 h-4 bg-white dark:bg-nord-dark-bg"></div>
-            </div>
+            <Image src="/favicon.svg" alt="APAPE" width={32} height={32} className="border-2 border-nord-light-text dark:border-nord-dark-text" />
             <h1 className="text-xl font-bold tracking-tighter uppercase">
               APAPE
             </h1>

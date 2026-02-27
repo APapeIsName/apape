@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" shape-rendering="crispEdges">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#2E3440"/>
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <rect width="30" height="30" fill="none" stroke="#3B4252" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <!-- Border frame -->
+  <rect x="30" y="30" width="1140" height="570" fill="none" stroke="#4C566A" stroke-width="4"/>
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#5E81AC" stroke-width="2"/>
+  <!-- Large book icon -->
+  <rect x="100" y="180" width="160" height="240" fill="#5E81AC"/>
+  <rect x="100" y="180" width="30" height="240" fill="#4C6A8F"/>
+  <rect x="140" y="195" width="105" height="210" fill="#ECEFF4"/>
+  <rect x="155" y="220" width="75" height="15" fill="#88C0D0"/>
+  <rect x="155" y="250" width="55" height="15" fill="#88C0D0"/>
+  <rect x="155" y="280" width="65" height="15" fill="#88C0D0"/>
+  <rect x="155" y="310" width="50" height="15" fill="#88C0D0"/>
+  <rect x="155" y="340" width="70" height="15" fill="#88C0D0"/>
+  <!-- APAPE title -->
+  <!-- A -->
+  <rect x="340" y="220" width="20" height="100" fill="#ECEFF4"/>
+  <rect x="400" y="220" width="20" height="100" fill="#ECEFF4"/>
+  <rect x="360" y="200" width="40" height="20" fill="#ECEFF4"/>
+  <rect x="360" y="270" width="40" height="20" fill="#ECEFF4"/>
+  <!-- P -->
+  <rect x="440" y="200" width="20" height="120" fill="#ECEFF4"/>
+  <rect x="460" y="200" width="40" height="20" fill="#ECEFF4"/>
+  <rect x="500" y="220" width="20" height="30" fill="#ECEFF4"/>
+  <rect x="460" y="250" width="40" height="20" fill="#ECEFF4"/>
+  <!-- A -->
+  <rect x="540" y="220" width="20" height="100" fill="#ECEFF4"/>
+  <rect x="600" y="220" width="20" height="100" fill="#ECEFF4"/>
+  <rect x="560" y="200" width="40" height="20" fill="#ECEFF4"/>
+  <rect x="560" y="270" width="40" height="20" fill="#ECEFF4"/>
+  <!-- P -->
+  <rect x="640" y="200" width="20" height="120" fill="#ECEFF4"/>
+  <rect x="660" y="200" width="40" height="20" fill="#ECEFF4"/>
+  <rect x="700" y="220" width="20" height="30" fill="#ECEFF4"/>
+  <rect x="660" y="250" width="40" height="20" fill="#ECEFF4"/>
+  <!-- E -->
+  <rect x="740" y="200" width="20" height="120" fill="#ECEFF4"/>
+  <rect x="760" y="200" width="50" height="20" fill="#ECEFF4"/>
+  <rect x="760" y="255" width="40" height="20" fill="#ECEFF4"/>
+  <rect x="760" y="300" width="50" height="20" fill="#ECEFF4"/>
+  <!-- Subtitle -->
+  <rect x="340" y="360" width="470" height="2" fill="#4C566A"/>
+  <!-- "Blog & AI Encyclopedia" as pixel text approximation -->
+  <text x="340" y="410" font-family="monospace" font-size="28" fill="#88C0D0" letter-spacing="4">Blog &amp; AI Encyclopedia</text>
+  <!-- Sparkles -->
+  <rect x="860" y="180" width="15" height="15" fill="#88C0D0"/>
+  <rect x="845" y="195" width="15" height="15" fill="#88C0D0"/>
+  <rect x="875" y="195" width="15" height="15" fill="#88C0D0"/>
+  <rect x="860" y="210" width="15" height="15" fill="#88C0D0"/>
+  <rect x="950" y="280" width="10" height="10" fill="#5E81AC"/>
+  <rect x="940" y="290" width="10" height="10" fill="#5E81AC"/>
+  <rect x="960" y="290" width="10" height="10" fill="#5E81AC"/>
+  <rect x="950" y="300" width="10" height="10" fill="#5E81AC"/>
+  <rect x="1020" y="200" width="12" height="12" fill="#A3BE8C"/>
+  <rect x="1008" y="212" width="12" height="12" fill="#A3BE8C"/>
+  <rect x="1032" y="212" width="12" height="12" fill="#A3BE8C"/>
+  <rect x="1020" y="224" width="12" height="12" fill="#A3BE8C"/>
+  <!-- Bottom decorative pixels -->
+  <rect x="100" y="480" width="10" height="10" fill="#BF616A"/>
+  <rect x="130" y="480" width="10" height="10" fill="#D08770"/>
+  <rect x="160" y="480" width="10" height="10" fill="#EBCB8B"/>
+  <rect x="190" y="480" width="10" height="10" fill="#A3BE8C"/>
+  <rect x="220" y="480" width="10" height="10" fill="#88C0D0"/>
+  <rect x="250" y="480" width="10" height="10" fill="#5E81AC"/>
+  <rect x="280" y="480" width="10" height="10" fill="#B48EAD"/>
+  <!-- URL -->
+  <text x="600" y="540" font-family="monospace" font-size="22" fill="#4C566A" text-anchor="middle" letter-spacing="6">apape.vercel.app</text>
+</svg>
