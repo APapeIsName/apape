@@ -1,0 +1,7 @@
+node_modules
+.next
+.git
+*.md
+screen_*.png
+.env
+.env.local

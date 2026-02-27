@@ -36,6 +36,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# stitch design screenshots
+screen_*.png
+.stitch-project.json
+docs/.stitch-project.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

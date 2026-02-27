@@ -25,6 +25,8 @@ interface CommentSectionProps {
   currentUserId?: string;
 }
 
+const COMMENTS_PER_PAGE = 20;
+
 export function CommentSection({
   articleId,
   initialComments,
@@ -35,6 +37,14 @@ export function CommentSection({
   const [content, setContent] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Pagination: if we got exactly COMMENTS_PER_PAGE initial comments, there may be more
+  const [cursor, setCursor] = useState<string | null>(
+    initialComments.length === COMMENTS_PER_PAGE
+      ? initialComments[initialComments.length - 1].id
+      : null
+  );
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -87,6 +97,27 @@ export function CommentSection({
     },
     [content, status, articleId, currentUserId]
   );
+
+  const handleLoadMore = useCallback(async () => {
+    if (!cursor || loadingMore) return;
+
+    setLoadingMore(true);
+    try {
+      const res = await fetch(
+        `/api/articles/${articleId}/comments?cursor=${cursor}&limit=${COMMENTS_PER_PAGE}`
+      );
+      if (!res.ok) throw new Error("Failed to load more comments.");
+
+      const data: { items: Comment[]; nextCursor?: string } = await res.json();
+
+      setComments((prev) => [...prev, ...data.items]);
+      setCursor(data.nextCursor ?? null);
+    } catch {
+      // Silently fail -- user can retry
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [cursor, loadingMore, articleId]);
 
   return (
     <section className="flex flex-col gap-6">
@@ -191,6 +222,17 @@ export function CommentSection({
           ))
         )}
       </div>
+
+      {/* Load More */}
+      {cursor && (
+        <button
+          onClick={handleLoadMore}
+          disabled={loadingMore}
+          className="w-full py-3 bg-nord-0 text-white font-bold uppercase tracking-widest text-xs hover:bg-nord-light-accent transition-colors border-2 border-nord-1 disabled:opacity-50"
+        >
+          {loadingMore ? "Loading..." : "Load More"}
+        </button>
+      )}
     </section>
   );
 }
