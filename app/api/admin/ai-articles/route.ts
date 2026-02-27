@@ -31,7 +31,6 @@ export async function POST(request: NextRequest) {
 
     const { topic, priorKnowledge } = parsed.data;
 
-    // Call external AI API (Gemini)
     const aiResult = await generateAiArticle(topic, priorKnowledge);
     if (!aiResult) {
       return badGateway("AI article generation failed");
@@ -121,18 +120,29 @@ async function generateAiArticle(
     }
 
     const data = await response.json();
+    console.log("[ai-article] response stop_reason:", data.stop_reason);
     const text = data.content?.[0]?.text;
-    if (!text) return null;
+    if (!text) {
+      console.error("[ai-article] No text in response:", JSON.stringify(data).slice(0, 500));
+      return null;
+    }
+
+    console.log("[ai-article] raw text (first 200):", text.slice(0, 200));
 
     // Parse JSON from response (may be wrapped in markdown code block)
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return null;
+    const cleaned = text.replace(/```json?\s*/g, "").replace(/```\s*/g, "");
+    const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.error("[ai-article] No JSON found in response");
+      return null;
+    }
 
     const parsed = JSON.parse(jsonMatch[0]);
     if (parsed.title && parsed.content) {
       return { title: parsed.title, content: parsed.content };
     }
 
+    console.error("[ai-article] Parsed JSON missing title/content:", Object.keys(parsed));
     return null;
   } catch (e) {
     console.error("AI generation error:", e);
