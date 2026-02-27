@@ -48,7 +48,7 @@ export default async function HomePage() {
               >
                 <div className="flex flex-col gap-4">
                   <span className="text-lg text-nord-light-accent dark:text-nord-dark-accent font-bold uppercase underline">
-                    Module: {article.type === "AI" ? "AI_PEDIA" : "USER_BLOG"}
+                    Module: {article.type === "AI" ? "AI_GENERATED" : "USER_BLOG"}
                   </span>
                   <h3 className="text-3xl md:text-4xl font-bold text-nord-light-text dark:text-nord-dark-text leading-tight">
                     {article.title}
@@ -71,7 +71,7 @@ export default async function HomePage() {
                       )}
                     </div>
                     <Link
-                      href={`/${article.type === "AI" ? "pedia" : "blog"}/${article.id}`}
+                      href={`/blog/${article.id}`}
                       className="px-6 py-3 bg-nord-light-text dark:bg-nord-dark-text text-white dark:text-nord-dark-bg text-sm font-bold uppercase hover:bg-nord-light-accent dark:hover:bg-nord-dark-accent transition-colors"
                     >
                       Read More
@@ -157,10 +157,10 @@ export default async function HomePage() {
               Blog Archive
             </Link>
             <Link
-              href="/pedia"
+              href="/write"
               className="block bg-white dark:bg-nord-dark-bg p-4 border-4 border-nord-light-text dark:border-nord-dark-text font-bold uppercase tracking-widest text-sm hover:bg-nord-light-accent hover:text-white transition-colors text-center"
             >
-              AI Pedia
+              Write Article
             </Link>
           </div>
         </aside>

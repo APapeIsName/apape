@@ -72,7 +72,7 @@ export default async function BlogArticlePage({ params }: Params) {
 
         {/* Article Body */}
         <div
-          className="bg-white p-8 pixel-border leading-relaxed text-nord-1 space-y-6 text-lg prose max-w-none"
+          className="bg-white dark:bg-nord-dark-bg p-8 pixel-border leading-relaxed text-nord-1 dark:text-nord-dark-text space-y-6 text-lg prose max-w-none"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
 

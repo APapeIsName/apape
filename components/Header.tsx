@@ -25,12 +25,6 @@ export async function Header() {
             >
               Blog
             </Link>
-            <Link
-              href="/pedia"
-              className="text-sm font-bold uppercase tracking-widest text-nord-light-secondary dark:text-nord-dark-secondary hover:text-nord-light-accent dark:hover:text-nord-dark-accent"
-            >
-              Pedia
-            </Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">

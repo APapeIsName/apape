@@ -9,13 +9,13 @@ export const metadata: Metadata = {
     default: "APAPE",
     template: "%s | APAPE",
   },
-  description: "Blog & AI Encyclopedia Platform",
+  description: "AI-Powered Learning Blog Platform",
   icons: {
     icon: "/favicon.svg",
   },
   openGraph: {
     title: "APAPE",
-    description: "Blog & AI Encyclopedia Platform",
+    description: "AI-Powered Learning Blog Platform",
     url: "https://apape.vercel.app",
     siteName: "APAPE",
     images: [{ url: "/og-image.svg", width: 1200, height: 630 }],

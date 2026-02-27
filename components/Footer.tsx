@@ -16,12 +16,6 @@ export function Footer() {
           >
             Blog
           </Link>
-          <Link
-            href="/pedia"
-            className="text-nord-light-secondary dark:text-nord-dark-secondary hover:text-nord-light-accent dark:hover:text-nord-dark-accent"
-          >
-            Pedia
-          </Link>
         </div>
       </div>
     </footer>

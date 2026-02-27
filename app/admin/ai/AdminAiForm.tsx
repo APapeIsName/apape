@@ -86,7 +86,7 @@ export default function AdminAiForm() {
                 <span>Generated: &quot;{result.title}&quot;</span>
                 <button
                   type="button"
-                  onClick={() => router.push(`/pedia/${result.id}`)}
+                  onClick={() => router.push(`/blog/${result.id}`)}
                   className="bg-nord-0 text-white px-4 py-1 text-xs font-bold uppercase hover:bg-nord-light-accent transition-colors"
                 >
                   VIEW

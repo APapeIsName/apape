@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import remarkGfm from "remark-gfm";
 
 export default function WritePage() {
   const router = useRouter();
@@ -9,6 +12,7 @@ export default function WritePage() {
   const [content, setContent] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [showPreview, setShowPreview] = useState(true);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -47,83 +51,112 @@ export default function WritePage() {
   }
 
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
-  const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+  const charCount = content.length;
 
   return (
-    <main className="flex-1 flex justify-center py-12 px-4">
-      <div className="w-full max-w-[800px] flex flex-col gap-8">
-        {/* Title Section */}
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-nord-light-accent uppercase tracking-[0.2em]">
+    <main className="flex-1 flex flex-col py-6 px-4 max-w-[1400px] mx-auto w-full">
+      {/* Title Section */}
+      <div className="flex flex-col gap-4 mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs font-bold text-nord-light-accent dark:text-nord-dark-accent uppercase tracking-[0.2em]">
             <span className="material-symbols-outlined text-sm">edit_note</span>
-            Nord Light Edition - Write your story
+            Write your story
           </div>
-
-          {error && (
-            <div className="bg-red-50 border-4 border-red-400 p-4 text-sm font-bold text-red-700 uppercase">
-              {error}
-            </div>
-          )}
-
-          <div className="relative">
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              maxLength={120}
-              className="w-full bg-white border-4 border-nord-0 p-6 text-3xl font-black uppercase tracking-tight focus:ring-0 focus:outline-none placeholder:text-slate-300 pixel-border"
-              placeholder="ARTICLE_TITLE"
-            />
-          </div>
+          <button
+            type="button"
+            onClick={() => setShowPreview(!showPreview)}
+            className="md:hidden px-3 py-1 border-2 border-nord-0 dark:border-nord-dark-text text-xs font-bold uppercase"
+          >
+            {showPreview ? "Editor" : "Preview"}
+          </button>
         </div>
 
-        {/* Toolbar & Editor Section */}
-        <form onSubmit={handleSubmit}>
-          <div className="bg-white border-4 border-nord-0 pixel-border flex flex-col">
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 border-4 border-red-400 p-4 text-sm font-bold text-red-700 dark:text-red-400 uppercase">
+            {error}
+          </div>
+        )}
+
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          maxLength={120}
+          className="w-full bg-white dark:bg-nord-dark-bg border-4 border-nord-0 dark:border-nord-dark-text p-4 text-2xl font-black uppercase tracking-tight focus:ring-0 focus:outline-none placeholder:text-slate-300 dark:placeholder:text-nord-dark-secondary dark:text-nord-dark-text"
+          placeholder="ARTICLE_TITLE"
+        />
+      </div>
+
+      {/* Editor + Preview Split */}
+      <form onSubmit={handleSubmit} className="flex-1 flex flex-col">
+        <div className="flex-1 flex gap-4 min-h-[500px]">
+          {/* Left: Editor */}
+          <div className={`flex-1 flex flex-col bg-white dark:bg-nord-dark-bg border-4 border-nord-0 dark:border-nord-dark-text ${showPreview ? "hidden md:flex" : "flex"}`}>
             {/* Toolbar */}
-            <div className="border-b-4 border-nord-0 p-2 flex items-center justify-between bg-nord-5/50">
-              <div className="flex gap-1">
-                <span className="p-2 border-2 border-transparent text-nord-3 text-xs font-bold uppercase">
-                  Markdown
-                </span>
-              </div>
-              <div className="px-4 text-[10px] font-bold text-nord-3 uppercase tracking-widest hidden sm:block">
+            <div className="border-b-4 border-nord-0 dark:border-nord-dark-text p-2 flex items-center justify-between bg-nord-5/50 dark:bg-nord-dark-secondary/30">
+              <span className="px-2 py-1 text-xs font-bold uppercase text-nord-3 dark:text-nord-dark-secondary">
+                Markdown Editor
+              </span>
+              <div className="px-4 text-[10px] font-bold text-nord-3 dark:text-nord-dark-secondary uppercase tracking-widest hidden sm:block">
                 {content.length > 0 ? "Editing..." : "Ready"}
               </div>
             </div>
+            {/* Textarea */}
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="flex-1 w-full resize-none border-none focus:ring-0 p-6 text-base leading-relaxed text-nord-0 dark:text-nord-dark-text placeholder:text-slate-300 dark:placeholder:text-nord-dark-secondary bg-transparent font-mono"
+              placeholder={"마크다운으로 작성하세요...\n\n# 제목\n## 소제목\n**볼드** *이탤릭*\n\n```javascript\nconsole.log('Hello');\n```"}
+            />
+          </div>
 
-            {/* Main Textarea */}
-            <div className="p-6 min-h-[500px] flex flex-col">
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="flex-1 w-full resize-none border-none focus:ring-0 text-lg leading-relaxed text-nord-0 placeholder:text-slate-300 bg-transparent font-normal"
-                placeholder="START_WRITING..."
-              />
+          {/* Right: Preview */}
+          <div className={`flex-1 flex flex-col bg-white dark:bg-nord-dark-bg border-4 border-nord-0 dark:border-nord-dark-text ${showPreview ? "flex" : "hidden md:flex"}`}>
+            {/* Preview Header */}
+            <div className="border-b-4 border-nord-0 dark:border-nord-dark-text p-2 flex items-center justify-between bg-nord-5/50 dark:bg-nord-dark-secondary/30">
+              <span className="px-2 py-1 text-xs font-bold uppercase text-nord-light-accent dark:text-nord-dark-accent">
+                Preview
+              </span>
+              <span className="px-4 text-[10px] font-bold text-nord-3 dark:text-nord-dark-secondary uppercase tracking-widest hidden sm:block">
+                Live
+              </span>
+            </div>
+            {/* Rendered content */}
+            <div className="flex-1 p-6 overflow-y-auto">
+              {content.trim() ? (
+                <article className="prose prose-nord dark:prose-invert max-w-none">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeHighlight]}
+                  >
+                    {content}
+                  </ReactMarkdown>
+                </article>
+              ) : (
+                <p className="text-nord-3 dark:text-nord-dark-secondary text-sm font-bold uppercase italic">
+                  미리보기가 여기에 표시됩니다...
+                </p>
+              )}
             </div>
           </div>
+        </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 mt-4">
-            <button
-              type="submit"
-              disabled={submitting}
-              className="flex-1 h-16 bg-nord-light-accent text-white border-4 border-nord-0 flex items-center justify-center gap-3 font-black text-lg uppercase tracking-widest pixel-border pixel-button-shadow transition-all disabled:opacity-50"
-            >
-              <span className="material-symbols-outlined font-bold">send</span>
-              {submitting ? "PUBLISHING..." : "PUBLISH"}
-            </button>
+        {/* Bottom Bar */}
+        <div className="flex flex-col sm:flex-row gap-4 mt-4 items-center">
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full sm:w-auto h-14 px-12 bg-nord-light-accent dark:bg-nord-dark-accent text-white dark:text-nord-dark-bg border-4 border-nord-0 dark:border-nord-dark-text flex items-center justify-center gap-3 font-black text-lg uppercase tracking-widest transition-all disabled:opacity-50"
+          >
+            <span className="material-symbols-outlined font-bold">send</span>
+            {submitting ? "PUBLISHING..." : "PUBLISH"}
+          </button>
+          <div className="flex gap-6 text-xs font-bold text-nord-3 dark:text-nord-dark-secondary uppercase tracking-widest">
+            <span>{charCount} chars</span>
+            <span>{wordCount} words</span>
           </div>
-        </form>
-
-        {/* Footer Meta */}
-        <footer className="mt-4 border-t-2 border-nord-0/10 pt-8 pb-12 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-bold text-nord-3 uppercase tracking-widest">
-          <div className="flex gap-6">
-            <span>Word Count: {wordCount}</span>
-            <span>Reading Time: {readingTime}m</span>
-          </div>
-        </footer>
-      </div>
+        </div>
+      </form>
     </main>
   );
 }

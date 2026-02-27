@@ -1,0 +1,8 @@
+screen_*.png
+.stitch-project.json
+docs/.stitch-project.json
+exec -l /
+__tests__
+*.test.ts
+vitest.config.ts
+.claude/
