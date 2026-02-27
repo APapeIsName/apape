@@ -3,6 +3,8 @@
 @import "highlight.js/styles/nord.css";
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Nord Polar Night */
   --color-nord-0: #2E3440;
@@ -158,6 +160,8 @@
   padding: 1em;
   overflow-x: auto;
   border: 2px solid var(--color-nord-3);
+  background: var(--color-nord-0);
+  color: var(--color-nord-4);
 }
 .prose pre code {
   background: none;
