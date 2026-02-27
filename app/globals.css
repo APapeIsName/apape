@@ -1,26 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Nord Polar Night */
+  --color-nord-0: #2E3440;
+  --color-nord-1: #3B4252;
+  --color-nord-2: #434C5E;
+  --color-nord-3: #4C566A;
+  /* Nord Snow Storm */
+  --color-nord-4: #D8DEE9;
+  --color-nord-5: #E5E9F0;
+  --color-nord-6: #ECEFF4;
+  /* Nord Frost */
+  --color-nord-frost-1: #8FBCBB;
+  --color-nord-frost-2: #88C0D0;
+  --color-nord-frost-3: #81A1C1;
+  --color-nord-frost-4: #5E81AC;
+  /* Semantic aliases */
+  --color-nord-light-bg: #ECEFF4;
+  --color-nord-light-text: #2E3440;
+  --color-nord-light-accent: #5E81AC;
+  --color-nord-light-secondary: #4C566A;
+  --color-nord-dark-bg: #2E3440;
+  --color-nord-dark-text: #D8DEE9;
+  --color-nord-dark-accent: #88C0D0;
+  --color-nord-dark-secondary: #96A1B1;
+
+  /* Font family */
+  --font-display: "Space Grotesk", sans-serif;
+
+  /* Remove border radius (pixel aesthetic) */
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    background-color: var(--color-nord-light-bg);
+    color: var(--color-nord-light-text);
+    font-family: var(--font-display);
+    image-rendering: pixelated;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  .dark body {
+    background-color: var(--color-nord-dark-bg);
+    color: var(--color-nord-dark-text);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Pixel Border Utilities - defined as regular CSS classes */
+.pixel-border {
+  border: 4px solid #3B4252;
+  box-shadow: 4px 4px 0px #4C566A;
+  margin: 4px;
+}
+
+.pixel-border-accent {
+  border: 4px solid #5E81AC;
+  box-shadow: 4px 4px 0px #5E81AC;
+  margin: 4px;
+}
+
+.pixel-border-sm {
+  border: 2px solid #3B4252;
+}
+
+.pixel-button-shadow {
+  box-shadow: 4px 4px 0px 0px #2E3440;
+}
+.pixel-button-shadow:active {
+  box-shadow: 0px 0px 0px 0px #2E3440;
+  transform: translate(4px, 4px);
+}
+
+.pixel-divider {
+  height: 4px;
+  background-image: linear-gradient(to right, #4C566A 50%, transparent 50%);
+  background-size: 8px 100%;
+}
+
+.scanline {
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  background: linear-gradient(rgba(46, 52, 64, 0) 50%, rgba(46, 52, 64, 0.03) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
