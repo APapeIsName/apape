@@ -155,11 +155,17 @@
   background: var(--color-nord-1);
   color: var(--color-nord-frost-2);
 }
+/* Code blocks - light mode: soft background that blends with the page */
 .prose pre {
   margin: 1em 0;
   padding: 1em;
   overflow-x: auto;
-  border: 2px solid var(--color-nord-3);
+  border: 2px solid var(--color-nord-4);
+  background: var(--color-nord-5);
+  color: var(--color-nord-0);
+}
+.dark .prose pre {
+  border-color: var(--color-nord-3);
   background: var(--color-nord-0);
   color: var(--color-nord-4);
 }
@@ -169,6 +175,26 @@
   font-size: 0.875em;
   font-family: ui-monospace, monospace;
 }
+
+/* highlight.js overrides - light mode */
+.hljs { background: var(--color-nord-5) !important; color: var(--color-nord-0) !important; }
+.hljs-subst,
+.hljs-params,
+.hljs-attribute,
+.hljs-variable,
+.hljs-template-variable { color: var(--color-nord-1); }
+.hljs-comment,
+.hljs-quote { color: #7b88a1; }
+
+/* highlight.js overrides - dark mode (restore Nord theme) */
+.dark .hljs { background: var(--color-nord-0) !important; color: var(--color-nord-4) !important; }
+.dark .hljs-subst,
+.dark .hljs-params,
+.dark .hljs-attribute,
+.dark .hljs-variable,
+.dark .hljs-template-variable { color: var(--color-nord-4); }
+.dark .hljs-comment,
+.dark .hljs-quote { color: #616E88; }
 .prose a {
   color: var(--color-nord-frost-4);
   text-decoration: underline;
