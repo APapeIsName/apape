@@ -80,7 +80,7 @@ async function generateAiArticle(
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-6",
+          model: "claude-haiku-4-5-20251001",
           max_tokens: 4096,
           system: `당신은 뇌과학과 인지심리학에 기반하여 최고로 효율적인 학습 경험을 설계하는 '인지 학습 설계자'이자 전문 테크 라이터입니다.
 
