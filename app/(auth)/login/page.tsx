@@ -2,37 +2,78 @@
 
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
+
+function isInAppBrowser(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  return /KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line|SamsungBrowser\/\d+.*SamsungBrowser/i.test(ua) ||
+    // Generic WebView detection
+    (/wv\)/.test(ua) && /Android/.test(ua));
+}
 
 function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
+  const [inAppBrowser, setInAppBrowser] = useState(false);
+
+  useEffect(() => {
+    setInAppBrowser(isInAppBrowser());
+  }, []);
+
+  function openInExternalBrowser() {
+    const url = window.location.href;
+    // Android intent to open in Chrome
+    window.location.href = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
+    // Fallback: try window.open
+    setTimeout(() => {
+      window.open(url, "_system");
+    }, 500);
+  }
 
   return (
     <main className="flex-1 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         {/* Branding Header */}
         <div className="text-center mb-8">
-          <div className="inline-block p-4 border-4 border-nord-0 bg-white mb-4">
-            <div className="w-12 h-12 bg-nord-light-accent flex items-center justify-center">
-              <div className="w-6 h-6 bg-white"></div>
+          <div className="inline-block p-4 border-4 border-nord-0 dark:border-nord-dark-text bg-white dark:bg-nord-dark-bg mb-4">
+            <div className="w-12 h-12 bg-nord-light-accent dark:bg-nord-dark-accent flex items-center justify-center">
+              <div className="w-6 h-6 bg-white dark:bg-nord-dark-bg"></div>
             </div>
           </div>
-          <h2 className="text-4xl font-bold tracking-tighter uppercase text-nord-0">
+          <h2 className="text-4xl font-bold tracking-tighter uppercase text-nord-0 dark:text-nord-dark-text">
             Welcome Back
           </h2>
-          <p className="text-sm font-medium uppercase tracking-widest text-nord-3 mt-2">
+          <p className="text-sm font-medium uppercase tracking-widest text-nord-3 dark:text-nord-dark-secondary mt-2">
             Access your 8-bit dashboard
           </p>
         </div>
 
+        {/* In-app browser warning */}
+        {inAppBrowser && (
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 border-4 border-yellow-400 p-4 mb-6 text-center space-y-3">
+            <p className="text-sm font-bold text-yellow-800 dark:text-yellow-300">
+              인앱 브라우저에서는 Google 로그인이 제한됩니다.
+            </p>
+            <button
+              onClick={openInExternalBrowser}
+              className="bg-yellow-400 text-yellow-900 px-6 py-2 font-bold text-sm uppercase border-2 border-yellow-600"
+            >
+              외부 브라우저에서 열기
+            </button>
+            <p className="text-xs text-yellow-700 dark:text-yellow-400">
+              또는 브라우저 메뉴에서 &quot;외부 브라우저로 열기&quot;를 선택하세요
+            </p>
+          </div>
+        )}
+
         {/* Login Form Container */}
-        <div className="bg-white pixel-border p-8 md:p-10">
+        <div className="bg-white dark:bg-nord-dark-bg pixel-border p-8 md:p-10">
           <div className="space-y-6">
             {/* Google Button */}
             <button
               onClick={() => signIn("google", { callbackUrl })}
-              className="w-full flex items-center justify-center gap-3 bg-white py-4 font-bold uppercase tracking-widest text-sm border-4 border-nord-0 pixel-button-shadow transition-all text-nord-0 hover:bg-nord-5"
+              className="w-full flex items-center justify-center gap-3 bg-white dark:bg-nord-1 py-4 font-bold uppercase tracking-widest text-sm border-4 border-nord-0 dark:border-nord-dark-text pixel-button-shadow transition-all text-nord-0 dark:text-nord-dark-text hover:bg-nord-5 dark:hover:bg-nord-2"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path
@@ -58,7 +99,7 @@ function LoginForm() {
             {/* GitHub Button */}
             <button
               onClick={() => signIn("github", { callbackUrl })}
-              className="w-full flex items-center justify-center gap-3 bg-nord-0 py-4 font-bold uppercase tracking-widest text-sm border-4 border-nord-0 pixel-button-shadow transition-all text-white hover:bg-nord-2"
+              className="w-full flex items-center justify-center gap-3 bg-nord-0 py-4 font-bold uppercase tracking-widest text-sm border-4 border-nord-0 dark:border-nord-dark-text pixel-button-shadow transition-all text-white hover:bg-nord-2"
             >
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
@@ -70,7 +111,7 @@ function LoginForm() {
 
         {/* Bottom Text */}
         <div className="mt-8 text-center">
-          <p className="text-xs font-bold uppercase tracking-widest text-nord-3">
+          <p className="text-xs font-bold uppercase tracking-widest text-nord-3 dark:text-nord-dark-secondary">
             Login with your social account to continue
           </p>
         </div>
