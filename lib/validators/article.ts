@@ -29,4 +29,8 @@ export const createAiArticleSchema = z.object({
     .string()
     .min(1, "주제를 입력해주세요")
     .max(200, "주제는 200자 이내로 입력해주세요"),
+  priorKnowledge: z
+    .string()
+    .max(300, "기존 지식은 300자 이내로 입력해주세요")
+    .optional(),
 });
