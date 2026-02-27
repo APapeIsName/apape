@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" shape-rendering="crispEdges">
+  <!-- Background -->
+  <rect width="640" height="360" fill="#3B4252"/>
+  <!-- Grid -->
+  <defs>
+    <pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="none" stroke="#434C5E" stroke-width="0.3"/>
+    </pattern>
+  </defs>
+  <rect width="640" height="360" fill="url(#g)"/>
+  <!-- Open book -->
+  <rect x="200" y="100" width="120" height="160" fill="#5E81AC" transform="rotate(-8 260 180)"/>
+  <rect x="320" y="100" width="120" height="160" fill="#5E81AC" transform="rotate(8 320 180)"/>
+  <!-- Left page -->
+  <rect x="208" y="108" width="108" height="144" fill="#ECEFF4" transform="rotate(-8 262 180)"/>
+  <!-- Right page -->
+  <rect x="324" y="108" width="108" height="144" fill="#ECEFF4" transform="rotate(8 324 180)"/>
+  <!-- Spine -->
+  <rect x="315" y="95" width="10" height="170" fill="#4C6A8F"/>
+  <!-- Text lines left -->
+  <rect x="220" y="130" width="60" height="6" fill="#88C0D0" transform="rotate(-8 250 133)"/>
+  <rect x="220" y="148" width="45" height="6" fill="#88C0D0" transform="rotate(-8 242 151)"/>
+  <rect x="220" y="166" width="55" height="6" fill="#88C0D0" transform="rotate(-8 247 169)"/>
+  <!-- Text lines right -->
+  <rect x="340" y="130" width="60" height="6" fill="#88C0D0" transform="rotate(8 370 133)"/>
+  <rect x="340" y="148" width="45" height="6" fill="#88C0D0" transform="rotate(8 362 151)"/>
+  <rect x="340" y="166" width="55" height="6" fill="#88C0D0" transform="rotate(8 367 169)"/>
+  <!-- Glow sparkles -->
+  <rect x="310" y="70" width="8" height="8" fill="#88C0D0" opacity="0.9"/>
+  <rect x="302" y="78" width="8" height="8" fill="#88C0D0" opacity="0.7"/>
+  <rect x="318" y="78" width="8" height="8" fill="#88C0D0" opacity="0.7"/>
+  <rect x="310" y="86" width="8" height="8" fill="#88C0D0" opacity="0.5"/>
+  <rect x="450" y="110" width="6" height="6" fill="#5E81AC" opacity="0.8"/>
+  <rect x="444" y="116" width="6" height="6" fill="#5E81AC" opacity="0.6"/>
+  <rect x="456" y="116" width="6" height="6" fill="#5E81AC" opacity="0.6"/>
+  <rect x="170" y="130" width="6" height="6" fill="#A3BE8C" opacity="0.7"/>
+  <rect x="164" y="136" width="6" height="6" fill="#A3BE8C" opacity="0.5"/>
+  <rect x="176" y="136" width="6" height="6" fill="#A3BE8C" opacity="0.5"/>
+  <!-- APAPE small text -->
+  <text x="320" y="320" font-family="monospace" font-size="16" fill="#4C566A" text-anchor="middle" letter-spacing="8">APAPE</text>
+</svg>
