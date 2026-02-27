@@ -79,6 +79,7 @@ export default async function PediaArticlePage({ params }: Params) {
           initialComments={comments}
           isLoggedIn={!!user}
           currentUserId={user?.id}
+          articleType="AI"
         />
       </main>
 

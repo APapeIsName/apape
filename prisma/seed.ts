@@ -11,6 +11,18 @@ async function main() {
   await prisma.verificationToken.deleteMany();
   await prisma.user.deleteMany();
 
+  // Create AI system user (for auto-replies on pedia comments)
+  await prisma.user.upsert({
+    where: { id: "ai-system-user-apape" },
+    update: {},
+    create: {
+      id: "ai-system-user-apape",
+      email: "ai@apape.internal",
+      name: "AI Assistant",
+      role: "USER",
+    },
+  });
+
   // Create ADMIN user
   const admin = await prisma.user.create({
     data: {
