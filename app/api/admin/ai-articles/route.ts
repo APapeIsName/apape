@@ -12,6 +12,8 @@ import {
 } from "@/lib/api-error";
 import { rateLimitStrict } from "@/lib/rate-limit";
 
+export const maxDuration = 60;
+
 // POST /api/admin/ai-articles (ADMIN only)
 export async function POST(request: NextRequest) {
   try {
@@ -78,7 +80,7 @@ async function generateAiArticle(
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-6-20250514",
+          model: "claude-sonnet-4-6",
           max_tokens: 4096,
           system: `당신은 뇌과학과 인지심리학에 기반하여 최고로 효율적인 학습 경험을 설계하는 '인지 학습 설계자'이자 전문 테크 라이터입니다.
 
@@ -113,7 +115,8 @@ async function generateAiArticle(
     );
 
     if (!response.ok) {
-      console.error("Claude API error:", response.status);
+      const errBody = await response.text();
+      console.error("Claude API error:", response.status, errBody);
       return null;
     }
 

@@ -53,7 +53,8 @@ export async function generateAiReply(
     );
 
     if (!response.ok) {
-      console.error("[ai-reply] Claude API error:", response.status);
+      const errBody = await response.text();
+      console.error("[ai-reply] Claude API error:", response.status, errBody);
       return null;
     }
 
