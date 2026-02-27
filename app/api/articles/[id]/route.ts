@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { requireOwnerOrAdmin, AuthError } from "@/lib/auth";
+import { requireOwnerOrAdmin, requireAdmin, AuthError } from "@/lib/auth";
 import { updateArticleSchema } from "@/lib/validators/article";
 import {
   unauthorized,
@@ -73,13 +73,17 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
     const { id } = await params;
     const article = await prisma.article.findUnique({
       where: { id },
-      select: { authorId: true },
+      select: { authorId: true, type: true },
     });
 
     if (!article) return notFound("Article not found");
-    if (!article.authorId) return forbidden("AI articles cannot be deleted via this endpoint");
 
-    await requireOwnerOrAdmin(article.authorId);
+    // AI articles can only be deleted by ADMIN
+    if (article.type === "AI" || !article.authorId) {
+      await requireAdmin();
+    } else {
+      await requireOwnerOrAdmin(article.authorId);
+    }
 
     await prisma.article.delete({ where: { id } });
 

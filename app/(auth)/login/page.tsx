@@ -2,34 +2,47 @@
 
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 
 function isInAppBrowser(): boolean {
   if (typeof navigator === "undefined") return false;
   const ua = navigator.userAgent || "";
   return /KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line|SamsungBrowser\/\d+.*SamsungBrowser/i.test(ua) ||
-    // Generic WebView detection
     (/wv\)/.test(ua) && /Android/.test(ua));
+}
+
+function openInExternalBrowser(url: string) {
+  // Android: intent to open in default browser
+  const intentUrl = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
+  window.location.href = intentUrl;
+
+  // iOS / fallback: try Safari via universal link trick
+  setTimeout(() => {
+    window.open(url, "_blank");
+  }, 300);
 }
 
 function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
-  const [inAppBrowser, setInAppBrowser] = useState(false);
+  const [inApp, setInApp] = useState(false);
 
   useEffect(() => {
-    setInAppBrowser(isInAppBrowser());
+    setInApp(isInAppBrowser());
   }, []);
 
-  function openInExternalBrowser() {
-    const url = window.location.href;
-    // Android intent to open in Chrome
-    window.location.href = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
-    // Fallback: try window.open
-    setTimeout(() => {
-      window.open(url, "_system");
-    }, 500);
-  }
+  const handleLogin = useCallback(
+    (provider: string) => {
+      if (inApp) {
+        // In-app browser: open the login page in an external browser
+        const loginUrl = `${window.location.origin}/login?callbackUrl=${encodeURIComponent(callbackUrl)}`;
+        openInExternalBrowser(loginUrl);
+      } else {
+        signIn(provider, { callbackUrl });
+      }
+    },
+    [inApp, callbackUrl]
+  );
 
   return (
     <main className="flex-1 flex items-center justify-center p-6">
@@ -49,30 +62,12 @@ function LoginForm() {
           </p>
         </div>
 
-        {/* In-app browser warning */}
-        {inAppBrowser && (
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 border-4 border-yellow-400 p-4 mb-6 text-center space-y-3">
-            <p className="text-sm font-bold text-yellow-800 dark:text-yellow-300">
-              인앱 브라우저에서는 Google 로그인이 제한됩니다.
-            </p>
-            <button
-              onClick={openInExternalBrowser}
-              className="bg-yellow-400 text-yellow-900 px-6 py-2 font-bold text-sm uppercase border-2 border-yellow-600"
-            >
-              외부 브라우저에서 열기
-            </button>
-            <p className="text-xs text-yellow-700 dark:text-yellow-400">
-              또는 브라우저 메뉴에서 &quot;외부 브라우저로 열기&quot;를 선택하세요
-            </p>
-          </div>
-        )}
-
         {/* Login Form Container */}
         <div className="bg-white dark:bg-nord-dark-bg pixel-border p-8 md:p-10">
           <div className="space-y-6">
             {/* Google Button */}
             <button
-              onClick={() => signIn("google", { callbackUrl })}
+              onClick={() => handleLogin("google")}
               className="w-full flex items-center justify-center gap-3 bg-white dark:bg-nord-1 py-4 font-bold uppercase tracking-widest text-sm border-4 border-nord-0 dark:border-nord-dark-text pixel-button-shadow transition-all text-nord-0 dark:text-nord-dark-text hover:bg-nord-5 dark:hover:bg-nord-2"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -98,7 +93,7 @@ function LoginForm() {
 
             {/* GitHub Button */}
             <button
-              onClick={() => signIn("github", { callbackUrl })}
+              onClick={() => handleLogin("github")}
               className="w-full flex items-center justify-center gap-3 bg-nord-0 py-4 font-bold uppercase tracking-widest text-sm border-4 border-nord-0 dark:border-nord-dark-text pixel-button-shadow transition-all text-white hover:bg-nord-2"
             >
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">

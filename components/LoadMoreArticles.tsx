@@ -51,34 +51,34 @@ export function LoadMoreArticles({
         <Link
           key={article.id}
           href={`${basePath}/${article.id}`}
-          className="pixel-border-sm p-6 bg-nord-4/20 hover:bg-white transition-all cursor-pointer group"
+          className="pixel-border-sm p-6 bg-nord-4/20 dark:bg-nord-1/50 hover:bg-white dark:hover:bg-nord-1 transition-all cursor-pointer group"
         >
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 flex-shrink-0 bg-nord-light-accent border-2 border-nord-1 flex items-center justify-center text-nord-6 group-hover:bg-nord-0 transition-colors">
+            <div className="w-12 h-12 flex-shrink-0 bg-nord-light-accent dark:bg-nord-dark-accent border-2 border-nord-1 dark:border-nord-3 flex items-center justify-center text-nord-6 dark:text-nord-0 group-hover:bg-nord-0 dark:group-hover:bg-nord-frost-3 transition-colors">
               <span className="material-symbols-outlined">
                 {type === "AI" ? "psychology" : "description"}
               </span>
             </div>
             <div className="flex-1">
               <div className="flex justify-between items-start mb-2">
-                <h4 className="text-xl font-bold text-nord-0 uppercase tracking-tight">
+                <h4 className="text-xl font-bold text-nord-0 dark:text-nord-dark-text uppercase tracking-tight">
                   {article.title}
                 </h4>
               </div>
               <div className="flex items-center gap-4">
                 {type === "AI" ? (
-                  <span className="bg-nord-light-accent text-nord-6 px-2 py-0.5 text-[10px] font-bold uppercase">
+                  <span className="bg-nord-light-accent dark:bg-nord-dark-accent text-nord-6 dark:text-nord-0 px-2 py-0.5 text-[10px] font-bold uppercase">
                     AI Generated
                   </span>
                 ) : (
-                  <span className="text-nord-3 text-[10px] uppercase font-bold tracking-widest">
+                  <span className="text-nord-3 dark:text-nord-dark-secondary text-[10px] uppercase font-bold tracking-widest">
                     {article.author?.name ?? "Unknown"}
                   </span>
                 )}
-                <span className="text-nord-3 text-[10px] uppercase font-bold tracking-widest">
+                <span className="text-nord-3 dark:text-nord-dark-secondary text-[10px] uppercase font-bold tracking-widest">
                   {new Date(article.createdAt).toLocaleDateString("ko-KR")}
                 </span>
-                <span className={`${type === "AI" ? "text-nord-3" : "bg-nord-1 text-nord-6 px-2 py-0.5"} text-[10px] font-bold uppercase`}>
+                <span className={`${type === "AI" ? "text-nord-3 dark:text-nord-dark-secondary" : "bg-nord-1 dark:bg-nord-2 text-nord-6 dark:text-nord-dark-text px-2 py-0.5"} text-[10px] font-bold uppercase`}>
                   {article._count.comments} Comments
                 </span>
               </div>
@@ -91,7 +91,7 @@ export function LoadMoreArticles({
         <button
           onClick={loadMore}
           disabled={loading}
-          className="w-full py-4 bg-nord-0 text-white font-bold uppercase tracking-widest text-sm hover:bg-nord-light-accent transition-colors disabled:opacity-50 border-4 border-nord-1"
+          className="w-full py-4 bg-nord-0 dark:bg-nord-dark-accent text-white dark:text-nord-0 font-bold uppercase tracking-widest text-sm hover:bg-nord-light-accent dark:hover:bg-nord-frost-1 transition-colors disabled:opacity-50 border-4 border-nord-1 dark:border-nord-3"
         >
           {loading ? "LOADING..." : "LOAD MORE"}
         </button>
