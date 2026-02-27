@@ -57,9 +57,9 @@ async function generateAiArticle(
   topic: string,
   priorKnowledge?: string
 ): Promise<{ title: string; content: string } | null> {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    console.error("OPENAI_API_KEY is not set");
+    console.error("ANTHROPIC_API_KEY is not set");
     return null;
   }
 
@@ -69,20 +69,18 @@ async function generateAiArticle(
 
   try {
     const response = await fetch(
-      "https://api.openai.com/v1/chat/completions",
+      "https://api.anthropic.com/v1/messages",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "gpt-4o",
+          model: "claude-sonnet-4-6-20250514",
           max_tokens: 4096,
-          messages: [
-            {
-              role: "system",
-              content: `당신은 뇌과학과 인지심리학에 기반하여 최고로 효율적인 학습 경험을 설계하는 '인지 학습 설계자'이자 전문 테크 라이터입니다.
+          system: `당신은 뇌과학과 인지심리학에 기반하여 최고로 효율적인 학습 경험을 설계하는 '인지 학습 설계자'이자 전문 테크 라이터입니다.
 
 단순한 정보 나열이 아니라 독자가 글을 읽는 과정 자체에서 뇌과학적 학습 원리가 자연스럽게 적용되도록 글의 구조를 설계해야 합니다.
 
@@ -104,7 +102,7 @@ async function generateAiArticle(
 
 반드시 다음 JSON 형식으로만 응답해주세요 (마크다운 코드블록 없이):
 {"title": "제목", "content": "마크다운 본문"}`,
-            },
+          messages: [
             {
               role: "user",
               content: `학습 주제: ${topic}${priorKnowledgeSection}`,
@@ -115,12 +113,12 @@ async function generateAiArticle(
     );
 
     if (!response.ok) {
-      console.error("OpenAI API error:", response.status);
+      console.error("Claude API error:", response.status);
       return null;
     }
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content;
+    const text = data.content?.[0]?.text;
     if (!text) return null;
 
     // Parse JSON from response (may be wrapped in markdown code block)

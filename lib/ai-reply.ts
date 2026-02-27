@@ -11,28 +11,26 @@ interface AiReplyContext {
 export async function generateAiReply(
   context: AiReplyContext
 ): Promise<string | null> {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    console.error("[ai-reply] OPENAI_API_KEY is not set");
+    console.error("[ai-reply] ANTHROPIC_API_KEY is not set");
     return null;
   }
 
   try {
     const response = await fetch(
-      "https://api.openai.com/v1/chat/completions",
+      "https://api.anthropic.com/v1/messages",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "gpt-4o-mini",
+          model: "claude-haiku-4-5-20251001",
           max_tokens: 500,
-          messages: [
-            {
-              role: "system",
-              content: `당신은 AI 백과사전 플랫폼 "APAPE"의 AI 어시스턴트입니다.
+          system: `당신은 AI 백과사전 플랫폼 "APAPE"의 AI 어시스턴트입니다.
 사용자가 AI가 작성한 백과사전 아티클에 댓글을 남겼습니다.
 친절하고 전문적으로 답변해 주세요.
 
@@ -44,7 +42,7 @@ export async function generateAiReply(
 - 친근하지만 전문적인 톤을 유지하세요
 - 마크다운 형식은 사용하지 마세요 (일반 텍스트만)
 - 불필요한 인사말은 생략하세요`,
-            },
+          messages: [
             {
               role: "user",
               content: `[아티클 제목]\n${context.articleTitle}\n\n[아티클 내용 (요약)]\n${context.articleContent.slice(0, 1500)}\n\n[사용자 댓글]\n${context.userName}: ${context.userComment}`,
@@ -55,12 +53,12 @@ export async function generateAiReply(
     );
 
     if (!response.ok) {
-      console.error("[ai-reply] OpenAI API error:", response.status);
+      console.error("[ai-reply] Claude API error:", response.status);
       return null;
     }
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content?.trim();
+    const text = data.content?.[0]?.text?.trim();
     if (!text) return null;
 
     return text.slice(0, 2000);
