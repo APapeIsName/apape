@@ -10,6 +10,7 @@ import {
   rateLimited,
 } from "@/lib/api-error";
 import { rateLimit } from "@/lib/rate-limit";
+import { generateAiReply, createAiReplyComment } from "@/lib/ai-reply";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -57,10 +58,10 @@ export async function POST(request: NextRequest, { params }: Params) {
     const user = await requireAuth();
     const { id: articleId } = await params;
 
-    // Check article exists
+    // Check article exists (include type/title/content for AI reply)
     const article = await prisma.article.findUnique({
       where: { id: articleId },
-      select: { id: true },
+      select: { id: true, type: true, title: true, content: true },
     });
     if (!article) return notFound("Article not found");
 
@@ -82,7 +83,22 @@ export async function POST(request: NextRequest, { params }: Params) {
       },
     });
 
-    return NextResponse.json({ comment }, { status: 201 });
+    // Fire-and-forget: generate AI reply for pedia articles
+    const aiReplyPending = article.type === "AI";
+    if (aiReplyPending) {
+      generateAiReply({
+        articleTitle: article.title,
+        articleContent: article.content,
+        userComment: parsed.data.content,
+        userName: user.name || "사용자",
+      })
+        .then((content) => {
+          if (content) return createAiReplyComment(articleId, content);
+        })
+        .catch((err) => console.error("[ai-reply] async error:", err));
+    }
+
+    return NextResponse.json({ comment, aiReplyPending }, { status: 201 });
   } catch (e) {
     if (e instanceof AuthError) {
       return unauthorized();
